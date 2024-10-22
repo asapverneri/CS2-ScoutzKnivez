@@ -69,21 +69,6 @@ namespace ScoutzKnivez
         public bool VipHealtShot { get; set; } = true;
 
         // DISCORD STUFF
-        [JsonPropertyName("LogToDiscord")]
-        public bool LogToDiscord { get; set; } = false;
-
-        [JsonPropertyName("DiscordLogWebhook")]
-        public string DiscordLogWebhook { get; set; } = "";
-
-        [JsonPropertyName("LogTeamWinning")]
-        public bool LogTeamWinning { get; set; } = false;
-
-        [JsonPropertyName("LogFovUsage")]
-        public bool LogFovUsage { get; set; } = false;
-
-        [JsonPropertyName("LogRounds")]
-        public bool LogRounds { get; set; } = false;
-
         [JsonPropertyName("RequestPlayers")]
         public bool RequestPlayers { get; set; } = false;
 

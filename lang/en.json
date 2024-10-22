@@ -19,13 +19,6 @@
   "no.access": "{darkblue}[ScoutzKnivez] {red}You don't have access to use this command..",
   "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}VIP Perks has been given.",
 
-  "discordlog.title": "ScoutzKnivez Logging",
-  "discordlog.footer": "ScoutzKnivez v{0}",
-  "discordlog.fov": "{0} changed his FOV to -> {1}",
-  "discordlog.wins": "{0} won the round!",
-  "discordlog.roundstart": "Round started!",
-  "discordlog.roundend": "Round ended!",
-
   "discord.title": "ScoutzKnivez",
   "discord.footer": "ScoutzKnivez v{0}",
   "discord.request": "{0} requested players to the server!\nMessage: {1}\n[Click here to join](https://www.urlinkhere.com/)",

@@ -25,16 +25,13 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 - [x] Team win notifications
 - [x] Multi language support
 - [x] Lightweight
-- [x] Built-in discord logs
 - [x] Welcome message
 - [x] Player requests via discord
 
 - [ ] Settings menu for admins?
 - [ ] More VIP perks?
-- [ ] More discord logs
 - [ ] DoubleJump?
 - [ ] Bullet tracers?
-- [ ] Some kind of basic point system?
 - [ ] hitmarker?
 
 ---
@@ -72,11 +69,6 @@ Tested on Windows for now, but should work with Linux aswell i guess.
   "VIPHealtShot": true,          // Enable/disable healthshot for VIP's.
 
   // DISCORD
-  "LogToDiscord": false,          // Enable/disable discord logging.
-  "DiscordLogWebhook": "",        // Set discord webhook for logging.
-  "LogTeamWinning": false,        // Enable/disable team winning logs.
-  "LogFovUsage": false,           // Enable/disable fov usage logs.
-  "LogRounds": false,             // Enable/disable round start/end logs.
   "RequestPlayers": false,        // Enable/disable requestplayer feature
   "RequestPlayersCommand": "css_request",      // Customize command.
   "DiscordWebhook": "",           // Set discord webhook for requestplayer.

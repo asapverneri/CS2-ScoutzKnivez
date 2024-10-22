@@ -11,6 +11,7 @@ using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
+using scoutzknivez;
 using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Numerics;
@@ -25,7 +26,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     public override string ModuleName => "ScoutzKnivez";
     public override string ModuleDescription => "ScoutzKnivez gamemode for CS2";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.0";
+    public override string ModuleVersion => "1.1";
 
     HashSet<ulong> Hiding = new HashSet<ulong>();
     public ScoutzKnivezConfig Config { get; set; } = new();
@@ -56,18 +57,23 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         Logger.LogInformation($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
         Logger.LogInformation($"     LOADED SUCCEFFULLY! (VERSION v{ModuleVersion})");
 
+        Task.Run(async () =>
+        {
+            await Utils.CompareVersions(ModuleVersion, "https://raw.githubusercontent.com/asapverneri/CS2-ScoutzKnivez/main/pluginversion", Logger);
+        });
+
         if (Config.DebugMode)
         {
-            Logger.LogInformation($"===========================================");
-            Logger.LogInformation($"       YOU ARE RUNNING ON DEBUGMODE!       ");
-            Logger.LogInformation($"        DISABLE IT FROM THE CONFIG.        ");
-            Logger.LogInformation($"===========================================");
+            Logger.LogWarning($"===========================================");
+            Logger.LogWarning($"       YOU ARE RUNNING ON DEBUGMODE!       ");
+            Logger.LogWarning($"        DISABLE IT FROM THE CONFIG.        ");
+            Logger.LogWarning($"===========================================");
         }
 
-        if (Config.LogToDiscord && Config.DiscordLogWebhook == "")
+        if (Config.RequestPlayers && Config.DiscordWebhook == "")
         {
             Logger.LogInformation($"===========================================");
-            Logger.LogInformation($"      YOU SHOULD SET WEBHOOKS IN ORDER     ");
+            Logger.LogInformation($"      YOU SHOULD SET WEBHOOK IN ORDER      ");
             Logger.LogInformation($"      TO GET DISCORD FEATURES TO WORK      ");
             Logger.LogInformation($"===========================================");
         }
@@ -131,10 +137,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             Server.ExecuteCommand($"sv_autobunnyhopping 0");
             Server.ExecuteCommand($"sv_enablebunnyhopping 0");
         }
-        if (Config.LogToDiscord && Config.LogRounds)
-        {
-            _ = SendDiscordLogRoundStart();
-        }
+
         DebugMode($"[DEBUG] EventRoundStart");
         return HookResult.Continue;
     }
@@ -156,15 +159,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
                 string winningTeam = ctPlayers.Count > tPlayers.Count ? $"{Localizer["CT"]}" : $"{Localizer["T"]}";
 
                 Server.PrintToChatAll($"{Localizer["team.won", winningTeam]}");
-                if (Config.LogToDiscord && Config.LogTeamWinning)
-                {
-                    _ = SendDiscordLogWins(winningTeam);
-                }
             }
-        }
-        if (Config.LogToDiscord && Config.LogRounds)
-        {
-            _ = SendDiscordLogRoundEnd();
         }
         DebugMode($"[DEBUG] EventRoundEnd");
         return HookResult.Continue;
@@ -290,10 +285,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         Utilities.SetStateChanged(player, "CBasePlayerController", "m_iDesiredFOV");
         command.ReplyToCommand($"{Localizer["fov.set", desiredFov]}");
 
-        if (Config.LogToDiscord && Config.LogFovUsage)
-        {
-            _ = SendDiscordLogFov(player.PlayerName, desiredFov);
-        }
     }
 
     public void OnCommandct(CCSPlayerController? player, CommandInfo command)
@@ -433,140 +424,23 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     }
 
 
-
-
-
-
-
-
-    // Discord Logging & shit
-    public async Task SendDiscordLogFov(string playerName, int desiredFov)
+    private void SpawnFixnextround(CCSPlayerController? player)
     {
-        using (var httpClient = new HttpClient())
+        if (player == null) return;
+        AddTimer(0.66f, () =>
         {
-            var embed = new
-            {
-                title = $"{Localizer["discordlog.title"]}",
-                description = $"{Localizer["discordlog.fov", playerName, desiredFov]}",
-                color = 65280,
-                footer = new
-                {
-                    text = $"{Localizer["discordlog.footer", ModuleVersion]}"
-                }
-            };
-
-            var payload = new
-            {
-                embeds = new[] { embed }
-            };
-
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(Config.DiscordLogWebhook, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                DebugMode($"[DEBUG] Failed to send fov message to Discord! code: {response.StatusCode}");
-            }
-        }
+            player.PlayerPawn.Value.Render = Color.FromArgb(254, 255, 255, 255);
+            Utilities.SetStateChanged(player.PlayerPawn.Value, "CBaseModelEntity", "m_clrRender");
+            DebugMode($"[DEBUG] SpawnFixnextround (Hidelegs)");
+        });
     }
 
-    public async Task SendDiscordLogWins(string winningTeam)
-    {
-        using (var httpClient = new HttpClient())
-        {
-            var embed = new
-            {
-                title = $"{Localizer["discordlog.title"]}",
-                description = $"{Localizer["discordlog.wins", winningTeam]}",
-                color = 65280,
-                footer = new
-                {
-                    text = $"{Localizer["discordlog.footer", ModuleVersion]}"
-                }
-            };
 
-            var payload = new
-            {
-                embeds = new[] { embed }
-            };
 
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
 
-            var response = await httpClient.PostAsync(Config.DiscordLogWebhook, content);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                DebugMode($"[DEBUG] Failed to send teamwin message to Discord! code: {response.StatusCode}");
-            }
-        }
-    }
 
-    public async Task SendDiscordLogRoundStart()
-    {
-        using (var httpClient = new HttpClient())
-        {
-            var embed = new
-            {
-                title = $"{Localizer["discordlog.title"]}",
-                description = $"{Localizer["discordlog.roundstart"]}",
-                color = 65280,
-                footer = new
-                {
-                    text = $"{Localizer["discordlog.footer", ModuleVersion]}"
-                }
-            };
-
-            var payload = new
-            {
-                embeds = new[] { embed }
-            };
-
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(Config.DiscordLogWebhook, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                DebugMode($"[DEBUG] Failed to send roundstart message to Discord! code: {response.StatusCode}");
-            }
-        }
-    }
-
-    public async Task SendDiscordLogRoundEnd()
-    {
-        using (var httpClient = new HttpClient())
-        {
-            var embed = new
-            {
-                title = $"{Localizer["discordlog.title"]}",
-                description = $"{Localizer["discordlog.roundend"]}",
-                color = 65280,
-                footer = new
-                {
-                    text = $"{Localizer["discordlog.footer", ModuleVersion]}"
-                }
-            };
-
-            var payload = new
-            {
-                embeds = new[] { embed }
-            };
-
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(Config.DiscordLogWebhook, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                DebugMode($"[DEBUG] Failed to send roundend message to Discord! code: {response.StatusCode}");
-            }
-        }
-    }
+    // Discord shit
 
     public async Task SendDiscordRequest(string PlayerName, string message)
     {
@@ -598,17 +472,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
                 DebugMode($"[DEBUG] Failed to send request message to Discord! code: {response.StatusCode}");
             }
         }
-    }
-
-    private void SpawnFixnextround(CCSPlayerController? player)
-    {
-        if (player == null) return;
-        AddTimer(0.66f, () =>
-        {
-            player.PlayerPawn.Value.Render = Color.FromArgb(254, 255, 255, 255);
-            Utilities.SetStateChanged(player.PlayerPawn.Value, "CBaseModelEntity", "m_clrRender");
-            DebugMode($"[DEBUG] SpawnFixnextround (Hidelegs)");
-        });
     }
 
 
