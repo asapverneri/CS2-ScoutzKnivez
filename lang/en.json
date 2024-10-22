@@ -1,0 +1,34 @@
+{
+  "welcomemessage": "{darkblue}[ScoutzKnivez] {default}Hello, {0}! {default}Welcome to the server!",
+
+  "moved.ct": "{darkblue}[ScoutzKnivez] {default}You have been moved to {blue}{0}!",
+  "moved.t": "{darkblue}[ScoutzKnivez] {default}You have been moved to {yellow}{0}!",
+  "moved.spec": "{darkblue}[ScoutzKnivez] {default}You have been moved to {purple}{0}!",
+  "already.inteam": "{darkblue}[ScoutzKnivez] {red}You already are in {0}!",
+
+  "legs.shown": "{darkblue}[ScoutzKnivez] {default} Your legs are now shown.",
+  "legs.hidden": "{darkblue}[ScoutzKnivez] {default} Your legs are now hidden.",
+
+  "last.alive": "{darkblue}[ScoutzKnivez] {green}{0} {default}was the last player alive!",
+  "team.won": "{darkblue}[ScoutzKnivez] {0} {default}won the round!",
+  "CT": "{blue}CT",
+  "T": "{yellow}T",
+
+  "feature.disabled": "{darkblue}[ScoutzKnivez] {red}This feature is disabled in config.",
+  "fov.set": "{darkblue}[ScoutzKnivez] {green}Fov set to {0}.",
+  "no.access": "{darkblue}[ScoutzKnivez] {red}You don't have access to use this command..",
+  "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}VIP Perks has been given.",
+
+  "discordlog.title": "ScoutzKnivez Logging",
+  "discordlog.footer": "ScoutzKnivez v{0}",
+  "discordlog.fov": "{0} changed his FOV to -> {1}",
+  "discordlog.wins": "{0} won the round!",
+  "discordlog.roundstart": "Round started!",
+  "discordlog.roundend": "Round ended!",
+
+  "discord.title": "ScoutzKnivez",
+  "discord.footer": "ScoutzKnivez v{0}",
+  "discord.request": "{0} requested players to the server!\nMessage: {1}\n[Click here to join](https://www.urlinkhere.com/)",
+
+  "request.sent": "{darkblue}[ScoutzKnivez] {green}Request of players was sent!"
+} 
