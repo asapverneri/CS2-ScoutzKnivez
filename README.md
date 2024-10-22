@@ -29,13 +29,13 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 - [x] Welcome message
 - [x] Player requests via discord
 
-- [] Settings menu for admins?
-- [] More VIP perks?
-- [] More discord logs
-- [] DoubleJump?
-- [] Bullet tracers?
-- [] Some kind of basic point system?
-- [] hitmarker?
+- [ ] Settings menu for admins?
+- [ ] More VIP perks?
+- [ ] More discord logs
+- [ ] DoubleJump?
+- [ ] Bullet tracers?
+- [ ] Some kind of basic point system?
+- [ ] hitmarker?
 
 ---
 
