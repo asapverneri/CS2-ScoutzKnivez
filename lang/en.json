@@ -1,11 +1,6 @@
 {
   "welcomemessage": "{darkblue}[ScoutzKnivez] {default}Hello, {0}! {default}Welcome to the server!",
 
-  "moved.ct": "{darkblue}[ScoutzKnivez] {default}You have been moved to {blue}{0}!",
-  "moved.t": "{darkblue}[ScoutzKnivez] {default}You have been moved to {yellow}{0}!",
-  "moved.spec": "{darkblue}[ScoutzKnivez] {default}You have been moved to {purple}{0}!",
-  "already.inteam": "{darkblue}[ScoutzKnivez] {red}You already are in {0}!",
-
   "legs.shown": "{darkblue}[ScoutzKnivez] {default} Your legs are now shown.",
   "legs.hidden": "{darkblue}[ScoutzKnivez] {default} Your legs are now hidden.",
 

@@ -19,29 +19,35 @@ namespace ScoutzKnivez
         [JsonPropertyName("Gravity")]
         public string Gravity { get; set; } = "200";
 
+        [JsonPropertyName("MaxVelocity")]
+        public string MaxVelocity { get; set; } = "10000";
+
+        [JsonPropertyName("AirAccelerate")]
+        public string AirAccelerate { get; set; } = "12";
+
         [JsonPropertyName("ArmorValue")]
         public int ArmorValue { get; set; } = 100;
 
         [JsonPropertyName("TeamWinningNotify")]
-        public bool WinningNotify { get; set; } = true;
+        public bool WinningNotify { get; set; } = true;        
+
+        [JsonPropertyName("KillSound")]
+        public bool KillSound { get; set; } = true;
+
+        [JsonPropertyName("KillSoundFlag")]
+        public string KillSoundFlag { get; set; } = "";
+
+        [JsonPropertyName("KillSoundPath")]
+        public string KillSoundPath { get; set; } = "sounds/training/timer_bell";
 
         [JsonPropertyName("Fov")]
         public bool Fov { get; set; } = true;
 
+        [JsonPropertyName("FovFlag")]
+        public string FovFlag { get; set; } = "";
+
         [JsonPropertyName("FovCommand")]
         public string FovCommand { get; set; } = "css_fov";
-
-        [JsonPropertyName("JoinTeam")]
-        public bool JoinTeam { get; set; } = true;
-
-        [JsonPropertyName("JoinTCommand")]
-        public string JoinTCommand { get; set; } = "css_t";
-
-        [JsonPropertyName("JoinCTCommand")]
-        public string JoinCTCommand { get; set; } = "css_ct";
-
-        [JsonPropertyName("JoinSpecCommand")]
-        public string JoinSpecCommand { get; set; } = "css_spec";
 
         [JsonPropertyName("HideLegs")]
         public bool HideLegs { get; set; } = true;
@@ -65,8 +71,8 @@ namespace ScoutzKnivez
         [JsonPropertyName("VIPArmor")]
         public int VipArmor { get; set; } = 120;
 
-        [JsonPropertyName("VIPHealtShot")]
-        public bool VipHealtShot { get; set; } = true;
+        [JsonPropertyName("VIPHealthShot")]
+        public bool VipHealthShot { get; set; } = true;
 
         // DISCORD STUFF
         [JsonPropertyName("RequestPlayers")]

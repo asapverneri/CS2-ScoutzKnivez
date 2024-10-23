@@ -24,9 +24,9 @@ namespace ScoutzKnivez;
 public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
 {
     public override string ModuleName => "ScoutzKnivez";
-    public override string ModuleDescription => "ScoutzKnivez gamemode for CS2";
+    public override string ModuleDescription => "https://github.com/asapverneri/CS2-ScoutzKnivez";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.1";
+    public override string ModuleVersion => "1.2";
 
     HashSet<ulong> Hiding = new HashSet<ulong>();
     public ScoutzKnivezConfig Config { get; set; } = new();
@@ -44,22 +44,36 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         RegisterEventHandler<EventRoundStart>(OnRoundStart);
         RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
         RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
+        RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
         VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Hook(this.OnTakeDamage, HookMode.Pre);
 
         AddCommand($"{Config.FovCommand}", "Set fov", FovCommand);
-        AddCommand($"{Config.JoinTCommand}", "Join t", OnCommandterrorist);
-        AddCommand($"{Config.JoinCTCommand}", "join ct", OnCommandct);
-        AddCommand($"{Config.JoinSpecCommand}", "join spec", OnCommandspectate);
         AddCommand($"{Config.RequestPlayersCommand}", "request players", OnCommandRequest);
         AddCommand($"{Config.HideLegsCommand}", "Hide legs", HideLegsCommand);
 
-        Logger.LogInformation($"█▀ █▀▀ █▀█ █░█ ▀█▀ ▀█ █▄▀ █▄░█ █ █░█ █▀▀ ▀█");
-        Logger.LogInformation($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
-        Logger.LogInformation($"     LOADED SUCCEFFULLY! (VERSION v{ModuleVersion})");
+        Console.WriteLine(" ");
+        Console.WriteLine($"█▀ █▀▀ █▀█ █░█ ▀█▀ ▀█ █▄▀ █▄░█ █ █░█ █▀▀ ▀█");
+        Console.WriteLine($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
+        Console.WriteLine($"    LOADED SUCCEFFULLY! (VERSION v{ModuleVersion}) ");
+        Console.WriteLine(" ");
 
         Task.Run(async () =>
         {
-            await Utils.CompareVersions(ModuleVersion, "https://raw.githubusercontent.com/asapverneri/CS2-ScoutzKnivez/main/pluginversion", Logger);
+            bool isUpToDate = await Utils.CompareVersions(ModuleVersion, "https://raw.githubusercontent.com/asapverneri/CS2-ScoutzKnivez/main/pluginversion");
+
+            if (isUpToDate)
+            {
+                Logger.LogInformation("=====================");
+                Logger.LogInformation("Plugin is up to date.");
+                Logger.LogInformation("=====================");
+            }
+            else
+            {
+                Logger.LogWarning("=================================================");
+                Logger.LogWarning("Plugin is outdated! Please update it shortly.");
+                Logger.LogWarning("GitHub Repository: github.com/asapverneri/CS2-ScoutzKnivez");
+                Logger.LogWarning("=================================================");
+            }
         });
 
         if (Config.DebugMode)
@@ -84,61 +98,27 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     {
         VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Unhook(this.OnTakeDamage, HookMode.Pre);
 
-        Logger.LogInformation($"█▀ █▀▀ █▀█ █░█ ▀█▀ ▀█ █▄▀ █▄░█ █ █░█ █▀▀ ▀█");
-        Logger.LogInformation($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
-        Logger.LogInformation($"       UNLOADED SUCCEFFULLY! (VERSION v{ModuleVersion})");
+        Console.WriteLine(" ");
+        Console.WriteLine($"█▀ █▀▀ █▀█ █░█ ▀█▀ ▀█ █▄▀ █▄░█ █ █░█ █▀▀ ▀█");
+        Console.WriteLine($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
+        Console.WriteLine($"   UNLOADED SUCCEFFULLY! (VERSION v{ModuleVersion})");
+        Console.WriteLine(" ");
 
     }
 
-
     private HookResult OnGameStart(EventGameStart @event, GameEventInfo info)
     {
-        bool autobhop = Config.Autobunnyhop;
+        Utils.ExecuteCvars(Config, DebugMode);
 
-        Server.ExecuteCommand("sv_maxvelocity 10000");
-        Server.ExecuteCommand($"sv_gravity {Config.Gravity}");
-        Server.ExecuteCommand("sv_staminamax 0");
-        Server.ExecuteCommand("sv_staminajumpcost 0");
-        Server.ExecuteCommand("sv_staminalandcost 0");
-        Server.ExecuteCommand("sv_staminarecoveryrate 0");
-        Server.ExecuteCommand("sv_airaccelerate 12");
-        Server.ExecuteCommand("mp_buytime 0");
-        if (autobhop)
-        {
-            Server.ExecuteCommand($"sv_autobunnyhopping 1");
-            Server.ExecuteCommand($"sv_enablebunnyhopping 1");
-        }
-        else
-        {
-            Server.ExecuteCommand($"sv_autobunnyhopping 0");
-            Server.ExecuteCommand($"sv_enablebunnyhopping 0");
-        }
-        DebugMode($"[DEBUG] EventGameStart");
+        DebugMode($"EventGameStart");
         return HookResult.Continue;
     }
 
     private HookResult OnRoundStart(EventRoundStart @event, GameEventInfo info)
     {
-        bool autobhop = Config.Autobunnyhop;
+        Utils.ExecuteCvars(Config, DebugMode);
 
-        Server.ExecuteCommand("sv_maxvelocity 10000");
-        Server.ExecuteCommand($"sv_gravity {Config.Gravity}");
-        Server.ExecuteCommand("sv_staminamax 0");
-        Server.ExecuteCommand("sv_staminajumpcost 0");
-        Server.ExecuteCommand("sv_staminalandcost 0");
-        Server.ExecuteCommand("sv_staminarecoveryrate 0");
-        Server.ExecuteCommand("sv_airaccelerate 12");
-        Server.ExecuteCommand("mp_buytime 0");
-        if (autobhop) {
-            Server.ExecuteCommand($"sv_autobunnyhopping 1");
-            Server.ExecuteCommand($"sv_enablebunnyhopping 1");
-        }
-        else {
-            Server.ExecuteCommand($"sv_autobunnyhopping 0");
-            Server.ExecuteCommand($"sv_enablebunnyhopping 0");
-        }
-
-        DebugMode($"[DEBUG] EventRoundStart");
+        DebugMode($"EventRoundStart");
         return HookResult.Continue;
     }
 
@@ -161,7 +141,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
                 Server.PrintToChatAll($"{Localizer["team.won", winningTeam]}");
             }
         }
-        DebugMode($"[DEBUG] EventRoundEnd");
+        DebugMode($"EventRoundEnd");
         return HookResult.Continue;
     }
 
@@ -177,10 +157,10 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             AddTimer(Config.WelcomeMessageTimer, () =>
             {
                 player.PrintToChat($"{Localizer["welcomemessage", Name]}");
-                DebugMode($"[DEBUG] EventPlayerConnectFull Welcome message");
+                DebugMode($"EventPlayerConnectFull Welcome message");
             });
         }
-        DebugMode($"[DEBUG] EventPlayerConnectFull");
+        DebugMode($"EventPlayerConnectFull");
         return HookResult.Continue;
     }
 
@@ -191,7 +171,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         if (player == null || !player.IsValid) return HookResult.Continue;
 
         player.RemoveWeapons();
-        AddTimer(0.70f, () =>
+        AddTimer(0.10f, () =>
         {
             GiveGoods(player);
         });
@@ -199,7 +179,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         if (Hiding.Contains(player.SteamID))
             SpawnFixnextround(player);
 
-        DebugMode($"[DEBUG] EventPlayerSpawn");
+        DebugMode($"EventPlayerSpawn");
         return HookResult.Continue;
     }
 
@@ -211,6 +191,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         player.GiveNamedItem("weapon_ssg08");
         player.GiveNamedItem("weapon_knife");
 
+
         var playerPawn = player.PlayerPawn.Value;
         new CCSPlayer_ItemServices(playerPawn.ItemServices.Handle).HasHelmet = true;
         playerPawn.ArmorValue = Config.ArmorValue;
@@ -220,7 +201,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             new CCSPlayer_ItemServices(playerPawn.ItemServices.Handle).HasHelmet = true;
             playerPawn.ArmorValue = Config.VipArmor;
         }
-        if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VipHealtShot)
+        if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VipHealthShot)
         {
             player.GiveNamedItem("weapon_healthshot");
         }
@@ -228,7 +209,31 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         {
             player.PrintToChat($"{Localizer["vip.perksgiven"]}");
         }
-        DebugMode($"[DEBUG] GiveGoods Fired");
+        DebugMode($"GiveGoods Fired");
+    }
+    private HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo info)
+    {
+        if (!Config.KillSound) 
+            return HookResult.Continue;
+        if (@event == null) 
+            return HookResult.Continue;
+        var victim = @event.Userid;
+        var attacker = @event.Attacker;
+
+        if (victim == null || !victim.IsValid) 
+            return HookResult.Continue;
+        if (attacker == null || !attacker.IsValid || attacker.IsBot) 
+            return HookResult.Continue;
+        if (AdminManager.PlayerHasPermissions(attacker, Config.KillSoundFlag))
+            return HookResult.Continue;
+        
+        string killsound = Config.KillSoundPath;
+        if (attacker != victim)
+        {
+            attacker.ExecuteClientCommand("play " + killsound);
+            DebugMode($"Killsound played (OnPlayerDeath)");
+        }
+        return HookResult.Continue;
     }
 
     // Credits partiusfabaa
@@ -250,6 +255,8 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         {
             if (!AdminManager.PlayerHasPermissions(player, Config.VipFlag) && !Config.VipFeatures)
                 return HookResult.Continue;
+            if (player.IsBot) 
+                return HookResult.Continue;
             if (Config.VipDamageMultiplier == 0)
                 return HookResult.Continue;
 
@@ -262,7 +269,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
                 float newDamage = damageInfo.Damage;
                 float combined = oldDamage + newDamage;
 
-                DebugMode($"[DEBUG] Damage given = {combined}");
+                DebugMode($"{player.PlayerName} Damage given = {combined} (Default: {oldDamage})");
 
                 return HookResult.Continue;
             }
@@ -278,6 +285,10 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             command.ReplyToCommand($"{Localizer["feature.disabled"]}");
             return;
         }
+        if (AdminManager.PlayerHasPermissions(player, Config.FovFlag)){
+            player.PrintToChat($"{Localizer["no.access"]}");
+            return;
+        }
 
         if (!Int32.TryParse(command.GetArg(1), out var desiredFov)) return;
 
@@ -285,84 +296,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         Utilities.SetStateChanged(player, "CBasePlayerController", "m_iDesiredFOV");
         command.ReplyToCommand($"{Localizer["fov.set", desiredFov]}");
 
-    }
-
-    public void OnCommandct(CCSPlayerController? player, CommandInfo command)
-    {
-        if (!Config.JoinTeam){
-            command.ReplyToCommand($"{Localizer["feature.disabled"]}");
-            return;
-        }
-
-        if (player.TeamNum == 3)
-        {
-            command.ReplyToCommand($"{Localizer["already.inteam", CsTeam.CounterTerrorist]}");
-            return;
-        }
-
-        if (player.PawnIsAlive)
-        {
-            player.CommitSuicide(true, false);
-            player.ChangeTeam(CsTeam.CounterTerrorist);
-            command.ReplyToCommand($"{Localizer["moved.ct", CsTeam.CounterTerrorist]}");
-        }
-        else
-        {
-            player.ChangeTeam(CsTeam.CounterTerrorist);
-            command.ReplyToCommand($"{Localizer["moved.ct", CsTeam.CounterTerrorist]}");
-        }
-    }
-
-    public void OnCommandterrorist(CCSPlayerController? player, CommandInfo command)
-    {
-        if (!Config.JoinTeam){
-            command.ReplyToCommand($"{Localizer["feature.disabled"]}");
-            return;
-        }
-
-        if (player.TeamNum == 2)
-        {
-            command.ReplyToCommand($"{Localizer["already.inteam", CsTeam.Terrorist]}");
-            return;
-        }
-
-        if (player.PawnIsAlive)
-        {
-            player.CommitSuicide(true, false);
-            player.ChangeTeam(CsTeam.Terrorist);
-            command.ReplyToCommand($"{Localizer["moved.t", CsTeam.Terrorist]}");
-        }
-        else
-        {
-            player.ChangeTeam(CsTeam.Terrorist);
-            command.ReplyToCommand($"{Localizer["moved.t", CsTeam.Terrorist]}");
-        }
-    }
-
-    public void OnCommandspectate(CCSPlayerController? player, CommandInfo command)
-    {
-        if (!Config.JoinTeam){
-            command.ReplyToCommand($"{Localizer["feature.disabled"]}");
-            return;
-        }
-
-        if (player.TeamNum == 1)
-        {
-            command.ReplyToCommand($"{Localizer["already.inteam", CsTeam.Spectator]}");
-            return;
-        }
-
-        if (player.PawnIsAlive)
-        {
-            player.CommitSuicide(false, true);
-            player.ChangeTeam(CsTeam.Spectator);
-            command.ReplyToCommand($"{Localizer["moved.spec", CsTeam.Spectator]}");
-        }
-        else
-        {
-            player.ChangeTeam(CsTeam.Spectator);
-            command.ReplyToCommand($"{Localizer["moved.spec", CsTeam.CounterTerrorist]}");
-        }
     }
 
     public void HideLegsCommand(CCSPlayerController? player, CommandInfo command)
@@ -418,7 +351,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
 
         } catch (Exception ex)
         {
-            DebugMode($"[DEBUG] Cannot send discord request (OnCommandRequest) ({ex.Message})");
+            DebugMode($"Cannot send discord request (OnCommandRequest) ({ex.Message})");
         }
         return;
     }
@@ -431,7 +364,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         {
             player.PlayerPawn.Value.Render = Color.FromArgb(254, 255, 255, 255);
             Utilities.SetStateChanged(player.PlayerPawn.Value, "CBaseModelEntity", "m_clrRender");
-            DebugMode($"[DEBUG] SpawnFixnextround (Hidelegs)");
+            DebugMode($"SpawnFixnextround (Hidelegs)");
         });
     }
 
@@ -469,7 +402,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
 
             if (!response.IsSuccessStatusCode)
             {
-                DebugMode($"[DEBUG] Failed to send request message to Discord! code: {response.StatusCode}");
+                DebugMode($"Failed to send request message to Discord! code: {response.StatusCode}");
             }
         }
     }
@@ -480,8 +413,8 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     {
         if (Config.DebugMode)
         {
-            Server.PrintToChatAll(message);
-            Logger.LogInformation(message);
+            Server.PrintToChatAll($"[DEBUG] {message}");
+            Logger.LogInformation($"[DEBUG] {message}");
         }
     }
 }

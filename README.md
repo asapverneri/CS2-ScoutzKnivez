@@ -21,9 +21,11 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 - [x] Wide configurations
 - [x] Built-in FOV Changer
 - [x] Built-in Hidelegs
+- [x] Built-in killsound
 - [x] VIP perks
 - [x] Team win notifications
 - [x] Multi language support
+- [x] Version checker
 - [x] Lightweight
 - [x] Welcome message
 - [x] Player requests via discord
@@ -31,8 +33,6 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 - [ ] Settings menu for admins?
 - [ ] More VIP perks?
 - [ ] DoubleJump?
-- [ ] Bullet tracers?
-- [ ] hitmarker?
 
 ---
 
@@ -48,15 +48,17 @@ Tested on Windows for now, but should work with Linux aswell i guess.
   "PlayerWelcomeMessage": true,  // Enable/disable player welcome message.
   "WelcomeMessageTimer": 5,      // Duration (in seconds) before displaying the welcome message.
   "AutoBunnyHop": true,          // Enable/disable bunnyhopping.
-  "Gravity": "200",              // Customize gravity setting.
+  "Gravity": "200",              // Customize gravity value.
+  "MaxVelocity": "10000",        // Customize maxvelocity value.
+  "AirAccelerate": "12",         // Customize airaccelerate value.
   "ArmorValue": 100,             // Modify players armor. (0 = Disable)
   "TeamWinningNotify": true,     // Enable/disable Team winning notifications.
+  "KillSound": true,             // Enable/disable killsounds.
+  "KillSoundFlag": "",           // Set permission for killsounds.
+  "KillSoundPath": "sounds/training/timer_bell",       // Customize fov command.
   "Fov": true,                   // Enable/disable FOV command.
+  "FovFlag": "",                 // Set permission for command use.
   "FovCommand": "css_fov",       // Customize fov command.
-  "JoinTeam": true,              // Enable/disable teamjoin commands.
-  "JoinTCommand": "css_t",       // Customize terrorist command.
-  "JoinCTCommand": "css_ct",     // Customize ct command.
-  "JoinSpecCommand": "css_spec", // Customize spec command.
   "HideLegs": true,              // Enable/disable hidelegs command.
   "HideLegsCommand": "css_legs", // Customize hidelegs command.
 
@@ -66,7 +68,7 @@ Tested on Windows for now, but should work with Linux aswell i guess.
   "VIPPerkMessage": true,        // Enable/disable VIP perk message.
   "VipDamageMultiplier": 2,      // Change damagemultiplier for VIP's. (0 = Disable)
   "VIPArmor": 120,               // Change armor for VIP's.
-  "VIPHealtShot": true,          // Enable/disable healthshot for VIP's.
+  "VIPHealthShot": true,          // Enable/disable healthshot for VIP's.
 
   // DISCORD
   "RequestPlayers": false,        // Enable/disable requestplayer feature
@@ -85,9 +87,6 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 | Command         | Description                                                          | Permissions |
 |-----------------|----------------------------------------------------------------------|-------------|
 | !fov            | Enable/disable FOV command (Changeable)                              | -           |
-| !t              | Join terrorist (Changeable)                                          | -           |
-| !ct             | Join CT (Changeable)                                                 | -           |
-| !spec           | Join spec (Changeable)                                               | -           |
 | !request        | Request players to join the server via discord (Changeable)          | -           |
 | !hidelegs       | Hide your lower body (Changeable)                                    | -           |
 
