@@ -26,7 +26,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     public override string ModuleName => "ScoutzKnivez";
     public override string ModuleDescription => "https://github.com/asapverneri/CS2-ScoutzKnivez";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.2";
+    public override string ModuleVersion => "1.3";
 
     HashSet<ulong> Hiding = new HashSet<ulong>();
     public ScoutzKnivezConfig Config { get; set; } = new();
@@ -45,7 +45,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
         RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
-        VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Hook(this.OnTakeDamage, HookMode.Pre);
 
         AddCommand($"{Config.FovCommand}", "Set fov", FovCommand);
         AddCommand($"{Config.RequestPlayersCommand}", "request players", OnCommandRequest);
@@ -96,14 +95,11 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
 
     public override void Unload(bool hotReload)
     {
-        VirtualFunctions.CBaseEntity_TakeDamageOldFunc.Unhook(this.OnTakeDamage, HookMode.Pre);
-
         Console.WriteLine(" ");
         Console.WriteLine($"█▀ █▀▀ █▀█ █░█ ▀█▀ ▀█ █▄▀ █▄░█ █ █░█ █▀▀ ▀█");
         Console.WriteLine($"▄█ █▄▄ █▄█ █▄█ ░█░ █▄ █░█ █░▀█ █ ▀▄▀ ██▄ █▄");
         Console.WriteLine($"   UNLOADED SUCCEFFULLY! (VERSION v{ModuleVersion})");
         Console.WriteLine(" ");
-
     }
 
     private HookResult OnGameStart(EventGameStart @event, GameEventInfo info)
@@ -232,47 +228,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         {
             attacker.ExecuteClientCommand("play " + killsound);
             DebugMode($"Killsound played (OnPlayerDeath)");
-        }
-        return HookResult.Continue;
-    }
-
-    // Credits partiusfabaa
-    public HookResult OnTakeDamage(DynamicHook hook)
-    {
-        var damageInfo = hook.GetParam<CTakeDamageInfo>(1);
-
-        var attacker = damageInfo.Attacker.Value;
-        if (attacker is null)
-            return HookResult.Continue;
-
-        var pawnController = new CCSPlayerPawn(attacker.Handle).Controller.Value;
-        if (pawnController is null)
-            return HookResult.Continue;
-
-        var player = new CCSPlayerController(pawnController.Handle);
-
-        if (player.IsValid)
-        {
-            if (!AdminManager.PlayerHasPermissions(player, Config.VipFlag) && !Config.VipFeatures)
-                return HookResult.Continue;
-            if (player.IsBot) 
-                return HookResult.Continue;
-            if (Config.VipDamageMultiplier == 0)
-                return HookResult.Continue;
-
-            CCSWeaponBase? weaponBase = damageInfo.Ability.Value?.As<CCSWeaponBase>();
-
-            if (weaponBase != null && weaponBase.IsValid)
-            {
-                float oldDamage = damageInfo.Damage;
-                damageInfo.Damage *= Config.VipDamageMultiplier;
-                float newDamage = damageInfo.Damage;
-                float combined = oldDamage + newDamage;
-
-                DebugMode($"{player.PlayerName} Damage given = {combined} (Default: {oldDamage})");
-
-                return HookResult.Continue;
-            }
         }
         return HookResult.Continue;
     }

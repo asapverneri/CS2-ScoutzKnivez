@@ -65,9 +65,6 @@ namespace ScoutzKnivez
         [JsonPropertyName("VIPPerkMessage")]
         public bool VipPerkMsg { get; set; } = true;
 
-        [JsonPropertyName("VipDamageMultiplier")]
-        public float VipDamageMultiplier { get; set; } = 1.5f;
-
         [JsonPropertyName("VIPArmor")]
         public int VipArmor { get; set; } = 120;
 

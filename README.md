@@ -1,45 +1,48 @@
-## 🎮 CS2 ScoutzKnivez
-
-This is a legendary gamemode made for CS2. It's in early state, but it should be pretty stable.
-With this plugin, you only need maps where to play and it has English language ready to go.
-This is intended to be a feature rich gamemode with many features already included in one plugin.
-If you want to create translations or anything else, feel free to make a pull request!
-I've made this for my future ScoutzKnivez server that I might create and I'll be working on this whenever I get some free time.
-Tested on Windows for now, but should work with Linux aswell i guess.
-
-![GitHub tag (with filter)](https://img.shields.io/github/v/tag/asapverneri/CS2-ScoutzKnivez?style=for-the-badge&label=Version)
-![Last Commit](https://img.shields.io/github/last-commit/asapverneri/CS2-ScoutzKnivez?style=for-the-badge)
-
-> [!CAUTION]  
-> This is Beta version and there might be bugs.
+<div align="center">
+  <img src="https://cdn.discordapp.com/attachments/1288158253666144407/1298667476414103562/SCOUTZ_N_KNIVEZ_2.png?ex=671a65d6&is=67191456&hm=4ec7df9518298d6f515acfde4a5f03af3f0131453ccfb3831f93b05d8f65e917&)" width="500"/>
+  <h3>🎮 CS2 ScoutzKnivez</h3>
+  <p>This is a legendary gamemode made for CS2. It's in early state, but it should be pretty stable.
+  <br>With this plugin, you only need maps where to play and it has English language ready to go.
+  <br>
+  <br>If you want to create translations or anything else, feel free to make a pull request!
+  <br>I've made this for my future ScoutzKnivez server that I might create and I'll be working on this whenever I get some free time.
+  <br>Tested on Windows for now, but should work with Linux aswell i guess.</p>
+</div>
+<div align="center">
+  <img src="https://img.shields.io/github/v/tag/asapverneri/CS2-ScoutzKnivez?style=for-the-badge&label=Version" alt="GitHub tag (with filter)" />
+  <img src="https://img.shields.io/github/last-commit/asapverneri/CS2-ScoutzKnivez?style=for-the-badge" alt="Last Commit" />
+  <blockquote>
+    <strong>⚠️ <span style="color:red;">CAUTION</span></strong>  
+    <br><span style="color:red;">This is a Beta version, and there might be bugs.</span>
+  </blockquote>
+</div>
 
 ---
 
 ## 📋 Features / Roadmap
 
-- [x] Automatic weapon management
-- [x] Wide configurations
-- [x] Built-in FOV Changer
-- [x] Built-in Hidelegs
-- [x] Built-in killsound
-- [x] VIP perks
-- [x] Team win notifications
-- [x] Multi language support
-- [x] Version checker
-- [x] Lightweight
-- [x] Welcome message
-- [x] Player requests via discord
-
-- [ ] Settings menu for admins?
-- [ ] More VIP perks?
-- [ ] DoubleJump?
+<p>✅ Automatic weapon management</p>
+<p>✅ Wide configurations</p>
+<p>✅ Built-in FOV Changer</p>
+<p>✅ Built-in Hidelegs</p>
+<p>✅ Built-in killsound</p>
+<p>✅ VIP perks</p>
+<p>✅ Team win notifications</p>
+<p>✅ Multi language support</p>
+<p>✅ Version checker</p>
+<p>✅ Welcome message</p>
+<p>✅ Player requests via discord</p>
+<br>
+<p>⬜ Settings menu for admins?</p>
+<p>⬜ More VIP perks?</p>
 
 ---
 
 ## 📦 Installion
 
 - Install latest [CounterStrike Sharp](https://github.com/roflmuffin/CounterStrikeSharp) & [Metamod:Source](https://www.sourcemm.net/downloads.php/?branch=master)
-- Download the latest release from the releases tab and copy it into the addons folder.
+- Download the latest release from the releases tab and copy it into the csgo folder.
+You might find maps for this gamemode [Here](https://steamcommunity.com/workshop/browse/?appid=730&searchtext=scout&childpublishedfileid=0&browsesort=textsearch&section=)
 
 **Example config:**
 ```json
@@ -66,7 +69,6 @@ Tested on Windows for now, but should work with Linux aswell i guess.
   "VIPFeatures": true,           // Enable/disable VIP features.
   "VIPFlag": "@css/vip",         // Customize VIP flag.
   "VIPPerkMessage": true,        // Enable/disable VIP perk message.
-  "VipDamageMultiplier": 2,      // Change damagemultiplier for VIP's. (0 = Disable)
   "VIPArmor": 120,               // Change armor for VIP's.
   "VIPHealthShot": true,          // Enable/disable healthshot for VIP's.
 
@@ -88,7 +90,14 @@ Tested on Windows for now, but should work with Linux aswell i guess.
 |-----------------|----------------------------------------------------------------------|-------------|
 | !fov            | Enable/disable FOV command (Changeable)                              | -           |
 | !request        | Request players to join the server via discord (Changeable)          | -           |
-| !hidelegs       | Hide your lower body (Changeable)                                    | -           |
+| !legs           | Hide your lower body (Changeable)                                    | -           |
+
+
+## 💡 Useful Addons/Plugins
+
+- [cs2-DoubleJump](https://github.com/fidarit/cs2-DoubleJump): CS2 implementation of double jump.
+- [cs2-damage-modifier](https://github.com/exkludera/cs2-damage-modifier): A plugin to modify weapon damage.
+- [CS2-ConnectMSG](https://github.com/asapverneri/CS2-ConnectMSG): A plugin to announce player connections and disconnections.
 
 ---
 
