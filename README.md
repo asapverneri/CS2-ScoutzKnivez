@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://cdn.discordapp.com/attachments/1288158253666144407/1298667476414103562/SCOUTZ_N_KNIVEZ_2.png?ex=671a65d6&is=67191456&hm=4ec7df9518298d6f515acfde4a5f03af3f0131453ccfb3831f93b05d8f65e917&)" width="500"/>
+  <img src="https://i.ibb.co/VpkWD2C3/SCOUTZ-N-KNIVEZ-2.png" width="500"/>
   <h3>🎮 CS2 ScoutzKnivez</h3>
   <p>This is a legendary gamemode made for CS2. It's in early state, but it should be pretty stable.
   <br>With this plugin, you only need maps where to play and it has English language ready to go.
