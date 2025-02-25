@@ -58,7 +58,7 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
   "TeamWinningNotify": true,     // Enable/disable Team winning notifications.
   "KillSound": true,             // Enable/disable killsounds.
   "KillSoundFlag": "",           // Set permission for killsounds.
-  "KillSoundPath": "sounds/training/timer_bell",       // Customize fov command.
+  "KillSoundPath": "sounds/training/timer_bell",       // Customize sound path.
   "Fov": true,                   // Enable/disable FOV command.
   "FovFlag": "",                 // Set permission for command use.
   "FovCommand": "css_fov",       // Customize fov command.
