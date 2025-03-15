@@ -1,23 +1,11 @@
 ﻿using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Core.Attributes.Registration;
-using CounterStrikeSharp.API.Core.Translations;
 using CounterStrikeSharp.API.Modules.Admin;
 using CounterStrikeSharp.API.Modules.Commands;
-using CounterStrikeSharp.API.Modules.Config;
-using CounterStrikeSharp.API.Modules.Cvars;
-using CounterStrikeSharp.API.Modules.Entities;
-using CounterStrikeSharp.API.Modules.Memory;
-using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
 using scoutzknivez;
-using System.Diagnostics.Metrics;
 using System.Drawing;
-using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Xml.Linq;
 
 namespace ScoutzKnivez;
 
@@ -26,7 +14,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     public override string ModuleName => "ScoutzKnivez";
     public override string ModuleDescription => "https://github.com/asapverneri/CS2-ScoutzKnivez";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.3";
+    public override string ModuleVersion => "1.4";
 
     HashSet<ulong> Hiding = new HashSet<ulong>();
     public ScoutzKnivezConfig Config { get; set; } = new();
@@ -40,14 +28,12 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     {
 
         RegisterEventHandler<EventGameStart>(OnGameStart);
-        RegisterEventHandler<EventPlayerConnectFull>(OnPlayerConnectFull);
         RegisterEventHandler<EventRoundStart>(OnRoundStart);
         RegisterEventHandler<EventRoundEnd>(OnRoundEnd);
         RegisterEventHandler<EventPlayerSpawn>(OnPlayerSpawn);
         RegisterEventHandler<EventPlayerDeath>(OnPlayerDeath);
 
         AddCommand($"{Config.FovCommand}", "Set fov", FovCommand);
-        AddCommand($"{Config.RequestPlayersCommand}", "request players", OnCommandRequest);
         AddCommand($"{Config.HideLegsCommand}", "Hide legs", HideLegsCommand);
 
         Console.WriteLine(" ");
@@ -83,14 +69,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             Logger.LogWarning($"===========================================");
         }
 
-        if (Config.RequestPlayers && Config.DiscordWebhook == "")
-        {
-            Logger.LogInformation($"===========================================");
-            Logger.LogInformation($"      YOU SHOULD SET WEBHOOK IN ORDER      ");
-            Logger.LogInformation($"      TO GET DISCORD FEATURES TO WORK      ");
-            Logger.LogInformation($"===========================================");
-        }
-
     }
 
     public override void Unload(bool hotReload)
@@ -109,7 +87,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         DebugMode($"EventGameStart");
         return HookResult.Continue;
     }
-
     private HookResult OnRoundStart(EventRoundStart @event, GameEventInfo info)
     {
         Utils.ExecuteCvars(Config, DebugMode);
@@ -138,25 +115,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             }
         }
         DebugMode($"EventRoundEnd");
-        return HookResult.Continue;
-    }
-
-    private HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo info)
-    {
-        if (@event == null) return HookResult.Continue;
-        var player = @event.Userid;
-        if (player == null || !player.IsValid || player.IsBot) return HookResult.Continue;
-        var Name = player.PlayerName;
-
-        if (Config.PlayerWelcomeMessage)
-        {
-            AddTimer(Config.WelcomeMessageTimer, () =>
-            {
-                player.PrintToChat($"{Localizer["welcomemessage", Name]}");
-                DebugMode($"EventPlayerConnectFull Welcome message");
-            });
-        }
-        DebugMode($"EventPlayerConnectFull");
         return HookResult.Continue;
     }
 
@@ -201,6 +159,10 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         {
             player.GiveNamedItem("weapon_healthshot");
         }
+        if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VIPDeagle)
+        {
+            player.GiveNamedItem("weapon_deagle");
+        }
         if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VipPerkMsg)
         {
             player.PrintToChat($"{Localizer["vip.perksgiven"]}");
@@ -220,7 +182,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             return HookResult.Continue;
         if (attacker == null || !attacker.IsValid || attacker.IsBot) 
             return HookResult.Continue;
-        if (AdminManager.PlayerHasPermissions(attacker, Config.KillSoundFlag))
+        if (!AdminManager.PlayerHasPermissions(attacker, Config.KillSoundFlag))
             return HookResult.Continue;
         
         string killsound = Config.KillSoundPath;
@@ -240,7 +202,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             command.ReplyToCommand($"{Localizer["feature.disabled"]}");
             return;
         }
-        if (AdminManager.PlayerHasPermissions(player, Config.FovFlag)){
+        if (!AdminManager.PlayerHasPermissions(player, Config.FovFlag)){
             player.PrintToChat($"{Localizer["no.access"]}");
             return;
         }
@@ -279,39 +241,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         }
     }
 
-    public void OnCommandRequest(CCSPlayerController? player, CommandInfo command)
-    {
-        if (!player.IsValid) return;
-        if (!Config.RequestPlayers) {
-            command.ReplyToCommand($"{Localizer["feature.disabled"]}");
-            return;
-        }
-
-        try
-        {
-            if (command.ArgCount < 1)
-            {
-                player.PrintToChat("Bro..");
-                return;
-            }
-            string message = command.GetArg(1);
-            if (message == null || message.Length < 1)
-            {
-                player.PrintToChat("Please type something");
-                return;
-            }
-
-            _ = SendDiscordRequest(player.PlayerName, message);
-            command.ReplyToCommand($"{Localizer["request.sent"]}");
-
-        } catch (Exception ex)
-        {
-            DebugMode($"Cannot send discord request (OnCommandRequest) ({ex.Message})");
-        }
-        return;
-    }
-
-
     private void SpawnFixnextround(CCSPlayerController? player)
     {
         if (player == null) return;
@@ -322,46 +251,6 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
             DebugMode($"SpawnFixnextround (Hidelegs)");
         });
     }
-
-
-
-
-
-
-    // Discord shit
-
-    public async Task SendDiscordRequest(string PlayerName, string message)
-    {
-        using (var httpClient = new HttpClient())
-        {
-            var embed = new
-            {
-                title = $"{Localizer["discord.title"]}",
-                description = $"{Localizer["discord.request", PlayerName, message]}",
-                color = 65280,
-                footer = new
-                {
-                    text = $"{Localizer["discord.footer", ModuleVersion]}"
-                }
-            };
-
-            var payload = new
-            {
-                embeds = new[] { embed }
-            };
-
-            var jsonPayload = Newtonsoft.Json.JsonConvert.SerializeObject(payload);
-            var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
-
-            var response = await httpClient.PostAsync(Config.DiscordWebhook, content);
-
-            if (!response.IsSuccessStatusCode)
-            {
-                DebugMode($"Failed to send request message to Discord! code: {response.StatusCode}");
-            }
-        }
-    }
-
 
     //DEBUGMODE
     private void DebugMode(string message)

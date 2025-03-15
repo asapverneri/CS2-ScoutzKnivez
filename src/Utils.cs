@@ -1,10 +1,5 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using CounterStrikeSharp.API;
-using Microsoft.Extensions.Logging;
+﻿using CounterStrikeSharp.API;
 using ScoutzKnivez;
-using Serilog.Core;
 
 namespace scoutzknivez
 {

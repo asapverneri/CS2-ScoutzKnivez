@@ -30,8 +30,6 @@
 <p>✅ Team win notifications</p>
 <p>✅ Multi language support</p>
 <p>✅ Version checker</p>
-<p>✅ Welcome message</p>
-<p>✅ Player requests via discord</p>
 <br>
 <p>⬜ Settings menu for admins?</p>
 <p>⬜ More VIP perks?</p>
@@ -48,8 +46,6 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
 ```json
 {
   // GENERAL
-  "PlayerWelcomeMessage": true,  // Enable/disable player welcome message.
-  "WelcomeMessageTimer": 5,      // Duration (in seconds) before displaying the welcome message.
   "AutoBunnyHop": true,          // Enable/disable bunnyhopping.
   "Gravity": "200",              // Customize gravity value.
   "MaxVelocity": "10000",        // Customize maxvelocity value.
@@ -71,11 +67,7 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
   "VIPPerkMessage": true,        // Enable/disable VIP perk message.
   "VIPArmor": 120,               // Change armor for VIP's.
   "VIPHealthShot": true,          // Enable/disable healthshot for VIP's.
-
-  // DISCORD
-  "RequestPlayers": false,        // Enable/disable requestplayer feature
-  "RequestPlayersCommand": "css_request",      // Customize command.
-  "DiscordWebhook": "",           // Set discord webhook for requestplayer.
+  "VIPDeagle": true,          // Enable/disable Deagle on spawn for VIP's.
 
   // DEBUGGING
   "DebugMode": false,
@@ -89,14 +81,12 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
 | Command         | Description                                                          | Permissions |
 |-----------------|----------------------------------------------------------------------|-------------|
 | !fov            | Enable/disable FOV command (Changeable)                              | -           |
-| !request        | Request players to join the server via discord (Changeable)          | -           |
 | !legs           | Hide your lower body (Changeable)                                    | -           |
 
 
 ## 💡 Useful Addons/Plugins
 
 - [cs2-DoubleJump](https://github.com/fidarit/cs2-DoubleJump): CS2 implementation of double jump.
-- [cs2-damage-modifier](https://github.com/exkludera/cs2-damage-modifier): A plugin to modify weapon damage.
 - [CS2-ConnectMSG](https://github.com/asapverneri/CS2-ConnectMSG): A plugin to announce player connections and disconnections.
 
 ---

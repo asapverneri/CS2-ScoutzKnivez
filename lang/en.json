@@ -1,6 +1,4 @@
 {
-  "welcomemessage": "{darkblue}[ScoutzKnivez] {default}Hello, {0}! {default}Welcome to the server!",
-
   "legs.shown": "{darkblue}[ScoutzKnivez] {default} Your legs are now shown.",
   "legs.hidden": "{darkblue}[ScoutzKnivez] {default} Your legs are now hidden.",
 
@@ -12,11 +10,5 @@
   "feature.disabled": "{darkblue}[ScoutzKnivez] {red}This feature is disabled in config.",
   "fov.set": "{darkblue}[ScoutzKnivez] {green}Fov set to {0}.",
   "no.access": "{darkblue}[ScoutzKnivez] {red}You don't have access to use this command..",
-  "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}VIP Perks has been given.",
-
-  "discord.title": "ScoutzKnivez",
-  "discord.footer": "ScoutzKnivez v{0}",
-  "discord.request": "{0} requested players to the server!\nMessage: {1}\n[Click here to join](https://www.urlinkhere.com/)",
-
-  "request.sent": "{darkblue}[ScoutzKnivez] {green}Request of players was sent!"
+  "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}VIP Perks has been given."
 } 

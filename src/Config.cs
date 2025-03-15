@@ -7,11 +7,6 @@ namespace ScoutzKnivez
     {
 
         // GENERAL STUFF
-        [JsonPropertyName("PlayerWelcomeMessage")]
-        public bool PlayerWelcomeMessage { get; set; } = true;
-
-        [JsonPropertyName("WelcomeMessageTimer")]
-        public float WelcomeMessageTimer { get; set; } = 5.0f;
 
         [JsonPropertyName("AutoBunnyHop")]
         public bool Autobunnyhop { get; set; } = true;
@@ -71,15 +66,8 @@ namespace ScoutzKnivez
         [JsonPropertyName("VIPHealthShot")]
         public bool VipHealthShot { get; set; } = true;
 
-        // DISCORD STUFF
-        [JsonPropertyName("RequestPlayers")]
-        public bool RequestPlayers { get; set; } = false;
-
-        [JsonPropertyName("RequestPlayersCommand")]
-        public string RequestPlayersCommand { get; set; } = "css_request";
-
-        [JsonPropertyName("DiscordWebhook")]
-        public string DiscordWebhook { get; set; } = "";
+        [JsonPropertyName("VIPDeagle")]
+        public bool VIPDeagle { get; set; } = true;
 
         // DEBUG
         [JsonPropertyName("DebugMode")]
