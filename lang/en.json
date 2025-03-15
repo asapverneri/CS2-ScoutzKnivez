@@ -1,14 +1,14 @@
 {
-  "legs.shown": "{darkblue}[ScoutzKnivez] {default} Your legs are now shown.",
-  "legs.hidden": "{darkblue}[ScoutzKnivez] {default} Your legs are now hidden.",
+  "legs.shown": "{darkblue}[ScoutzKnivez] {default}Your legs are now {green}shown{default}.",
+  "legs.hidden": "{darkblue}[ScoutzKnivez] {default}Your legs are now {red}hidden{default}.",
 
-  "last.alive": "{darkblue}[ScoutzKnivez] {green}{0} {default}was the last player alive!",
-  "team.won": "{darkblue}[ScoutzKnivez] {0} {default}won the round!",
+  "last.alive": "{darkblue}[ScoutzKnivez] {green}{0}{default}was the last man standing!",
+  "team.won": "{darkblue}[ScoutzKnivez] {0}{default}won the round!",
   "CT": "{blue}CT",
   "T": "{yellow}T",
 
-  "feature.disabled": "{darkblue}[ScoutzKnivez] {red}This feature is disabled in config.",
-  "fov.set": "{darkblue}[ScoutzKnivez] {green}Fov set to {0}.",
+  "feature.disabled": "{darkblue}[ScoutzKnivez] {red}This feature is disabled at the moment.",
+  "fov.set": "{darkblue}[ScoutzKnivez] {green}Fov set to {red}{0}{default}.",
   "no.access": "{darkblue}[ScoutzKnivez] {red}You don't have access to use this command..",
-  "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}VIP Perks has been given."
+  "vip.perksgiven": "{darkblue}[ScoutzKnivez] {green}You have received VIP perks!"
 } 
