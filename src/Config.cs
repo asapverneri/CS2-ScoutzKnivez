@@ -19,11 +19,14 @@ namespace ScoutzKnivez
         [JsonPropertyName("AirAccelerate")]
         public string AirAccelerate { get; set; } = "12";
 
+        [JsonPropertyName("Armor")]
+        public bool Armor { get; set; } = true;
+
         [JsonPropertyName("ArmorValue")]
         public int ArmorValue { get; set; } = 100;
 
         [JsonPropertyName("TeamWinningNotify")]
-        public bool WinningNotify { get; set; } = true;        
+        public bool WinningNotify { get; set; } = true;
 
         [JsonPropertyName("KillSound")]
         public bool KillSound { get; set; } = true;

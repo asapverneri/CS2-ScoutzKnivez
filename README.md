@@ -50,7 +50,8 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
   "Gravity": "200",              // Customize gravity value.
   "MaxVelocity": "10000",        // Customize maxvelocity value.
   "AirAccelerate": "12",         // Customize airaccelerate value.
-  "ArmorValue": 100,             // Modify players armor. (0 = Disable)
+  "Armor": true,                  // Enable/disable armor.
+  "ArmorValue": 100,             // Modify players armor value.
   "TeamWinningNotify": true,     // Enable/disable Team winning notifications.
   "KillSound": true,             // Enable/disable killsounds.
   "KillSoundFlag": "",           // Set permission for killsounds.
