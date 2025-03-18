@@ -14,7 +14,7 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
     public override string ModuleName => "ScoutzKnivez";
     public override string ModuleDescription => "https://github.com/asapverneri/CS2-ScoutzKnivez";
     public override string ModuleAuthor => "verneri";
-    public override string ModuleVersion => "1.4";
+    public override string ModuleVersion => "1.5";
 
     HashSet<ulong> Hiding = new HashSet<ulong>();
     public ScoutzKnivezConfig Config { get; set; } = new();
@@ -150,10 +150,10 @@ public class ScoutzKnivez : BasePlugin, IPluginConfig<ScoutzKnivezConfig>
         new CCSPlayer_ItemServices(playerPawn.ItemServices.Handle).HasHelmet = true;
         playerPawn.ArmorValue = Config.ArmorValue;
 
-        if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures)
+        if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VipArmor)
         {
             new CCSPlayer_ItemServices(playerPawn.ItemServices.Handle).HasHelmet = true;
-            playerPawn.ArmorValue = Config.VipArmor;
+            playerPawn.ArmorValue = Config.VipArmorValue;
         }
         if (AdminManager.PlayerHasPermissions(player, Config.VipFlag) && Config.VipFeatures && Config.VipHealthShot)
         {

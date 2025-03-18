@@ -7,7 +7,6 @@ namespace ScoutzKnivez
     {
 
         // GENERAL STUFF
-
         [JsonPropertyName("AutoBunnyHop")]
         public bool Autobunnyhop { get; set; } = true;
 
@@ -50,6 +49,7 @@ namespace ScoutzKnivez
         [JsonPropertyName("HideLegsCommand")]
         public string HideLegsCommand { get; set; } = "css_legs";
 
+
         // VIP STUFF
         [JsonPropertyName("VIPFeatures")]
         public bool VipFeatures { get; set; } = true;
@@ -61,13 +61,17 @@ namespace ScoutzKnivez
         public bool VipPerkMsg { get; set; } = true;
 
         [JsonPropertyName("VIPArmor")]
-        public int VipArmor { get; set; } = 120;
+        public bool VipArmor { get; set; } = true;
+
+        [JsonPropertyName("VIPArmorValue")]
+        public int VipArmorValue { get; set; } = 120;
 
         [JsonPropertyName("VIPHealthShot")]
         public bool VipHealthShot { get; set; } = true;
 
         [JsonPropertyName("VIPDeagle")]
         public bool VIPDeagle { get; set; } = true;
+
 
         // DEBUG
         [JsonPropertyName("DebugMode")]

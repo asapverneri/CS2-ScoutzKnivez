@@ -65,9 +65,10 @@ You might find maps for this gamemode [Here](https://steamcommunity.com/workshop
   "VIPFeatures": true,           // Enable/disable VIP features.
   "VIPFlag": "@css/vip",         // Customize VIP flag.
   "VIPPerkMessage": true,        // Enable/disable VIP perk message.
-  "VIPArmor": 120,               // Change armor for VIP's.
-  "VIPHealthShot": true,          // Enable/disable healthshot for VIP's.
-  "VIPDeagle": true,          // Enable/disable Deagle on spawn for VIP's.
+  "VIPArmor": true,              // Enable/disable VIP armor.
+  "VIPArmorValue": 120,          // Change armor for VIP's.
+  "VIPHealthShot": true,         // Enable/disable healthshot for VIP's.
+  "VIPDeagle": true,             // Enable/disable Deagle on spawn for VIP's.
 
   // DEBUGGING
   "DebugMode": false,
